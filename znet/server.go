@@ -23,7 +23,7 @@ func (s *Server) Start() {
 
 	go func() {
 		// 获取一个TCP的Addr
-		addr, err := net.ResolveTCPAddr(s.IPVersion, fmt.Sprintf("%s,%d", s.IP, s.Port))
+		addr, err := net.ResolveTCPAddr(s.IPVersion, fmt.Sprintf("%s:%d", s.IP, s.Port))
 		if err != nil {
 			fmt.Println("resolve tcp addr error:", err)
 			return
@@ -56,6 +56,7 @@ func (s *Server) Start() {
 						continue
 					}
 
+					fmt.Printf("receive client buf %s, cnt %d\n", buf, cnt)
 					// 回显功能
 					if _, err := conn.Write(buf[:cnt]); err != nil {
 						fmt.Println("write back buf err ", err)
