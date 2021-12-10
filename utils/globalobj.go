@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"zinx/ziface"
 )
 
@@ -12,21 +13,21 @@ import (
 type GlobalObj struct {
 	// server
 
-	TcpServer ziface.IServer // 当前Zinx全局的Server对象
+	TcpServer ziface.IServer `json:"tcp_server"` // 当前Zinx全局的Server对象
 
-	Host string // 当前服务器主机监听的IP
+	Host string `json:"host"` // 当前服务器主机监听的IP
 
-	TcpPort int // 当前服务器主机监听的端口号
+	TcpPort int `json:"tcp_port"` // 当前服务器主机监听的端口号
 
-	Name string // 当前服务器的名称
+	Name string `json:"name"` // 当前服务器的名称
 
 	// zinx
 
-	Version string // 当前zinx的版本号
+	Version string `json:"version"` // 当前zinx的版本号
 
-	MaxConn int // 当前服务器主机允许的最大链接数
+	MaxConn int `json:"max_conn"` // 当前服务器主机允许的最大链接数
 
-	MaxPackageSize uint32 // 当前zinx框架数据包的最大值
+	MaxPackageSize uint32 `json:"max_package_size"` // 当前zinx框架数据包的最大值
 }
 
 // 定义一个全局的对外的变量
@@ -34,14 +35,18 @@ var GlobalObject *GlobalObj
 
 // 从zinx.json中去加载用于自定义的参数
 func (g *GlobalObj) Reload() {
-	data, err := ioutil.ReadFile("$GOPATH/src/zinx/ZinxV0.4/conf/zinx.json")
+	data, err := os.Open("ZinxV0.4/zinx.json")
 	if err != nil {
 		fmt.Println("read file error:", err)
 		panic(err)
 	}
+	defer data.Close()
+
+	byteValue, _ := ioutil.ReadAll(data)
+	fmt.Println(string(byteValue))
 
 	// 解析json数据到结构体中
-	err = json.Unmarshal(data, &GlobalObject)
+	err = json.Unmarshal(byteValue, &GlobalObject)
 	if err != nil {
 		panic(err)
 	}

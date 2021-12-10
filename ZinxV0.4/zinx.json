@@ -1,0 +1,6 @@
+{
+  "name": "zinx v0.4 demoServerApp",
+  "host": "139.198.190.28",
+  "tcp_port": 8999,
+  "max_conn": 3
+}
