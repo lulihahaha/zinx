@@ -34,39 +34,41 @@ type GlobalObj struct {
 var GlobalObject *GlobalObj
 
 // 从zinx.json中去加载用于自定义的参数
-func (g *GlobalObj) Reload() {
+func (g *GlobalObj) Reload() (err error) {
 	data, err := os.Open("zinx.json")
 	if err != nil {
 		fmt.Println("read file error:", err)
-		panic(err)
+		return err
 	}
 	defer data.Close()
 
 	byteValue, err := ioutil.ReadAll(data)
 	if err != nil {
 		fmt.Println("read file error:", err)
-		panic(err)
+		return err
 	}
 	fmt.Println(string(byteValue))
 
 	// 解析json数据到结构体中
 	err = json.Unmarshal(byteValue, &GlobalObject)
 	if err != nil {
-		panic(err)
+		return err
 	}
+	return
 }
 
 // 提供一个init方法，初始化当前的GlobalObject
 func init() {
 	// 如果配置文件没有加载，就使用默认值
-	GlobalObject = &GlobalObj{
-		Name:           "ZinxServerApp",
-		Version:        "v0.4",
-		TcpPort:        8999,
-		Host:           "0.0.0.0",
-		MaxConn:        1000,
-		MaxPackageSize: 4096,
+	err := GlobalObject.Reload()
+	if err != nil {
+		GlobalObject = &GlobalObj{
+			Name:           "ZinxServerApp",
+			Version:        "v0.4",
+			TcpPort:        8999,
+			Host:           "0.0.0.0",
+			MaxConn:        1000,
+			MaxPackageSize: 4096,
+		}
 	}
-
-	GlobalObject.Reload()
 }
