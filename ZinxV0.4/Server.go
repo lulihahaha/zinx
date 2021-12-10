@@ -10,7 +10,7 @@ import (
 
 func main() {
 	// 创建一个Server句柄，使用Zinx的api
-	s := znet.NewServer()
+	s := znet.NewServer("[zinx V0.4]")
 	// 给zinx框架添加router
 	s.AddRouter(&PingRouter{})
 	// 启动Server

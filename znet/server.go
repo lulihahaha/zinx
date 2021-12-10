@@ -83,7 +83,8 @@ func (s *Server) Serve() {
 	select {}
 }
 
-func NewServer() ziface.IServer {
+func NewServer(name string) ziface.IServer {
+	fmt.Println(name)
 	s := &Server{
 		Name:      utils.GlobalObject.Name,
 		IPVersion: "tcp4",
