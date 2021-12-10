@@ -42,7 +42,11 @@ func (g *GlobalObj) Reload() {
 	}
 	defer data.Close()
 
-	byteValue, _ := ioutil.ReadAll(data)
+	byteValue, err := ioutil.ReadAll(data)
+	if err != nil {
+		fmt.Println("read file error:", err)
+		panic(err)
+	}
 	fmt.Println(string(byteValue))
 
 	// 解析json数据到结构体中
