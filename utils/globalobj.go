@@ -4,10 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"os"
-	"os/exec"
-	"path/filepath"
-	"strings"
 	"zinx/ziface"
 )
 
@@ -38,11 +34,7 @@ var GlobalObject *GlobalObj
 
 // 从zinx.json中去加载用于自定义的参数
 func (g *GlobalObj) Reload() {
-	file, _ := exec.LookPath(os.Args[0])
-	path, _ := filepath.Abs(file)
-	index := strings.LastIndex(path, string(os.PathSeparator))
-	path = path[:index]
-	data, err := ioutil.ReadFile(path + "/conf/zinx.json")
+	data, err := ioutil.ReadFile("$GOPATH/src/zinx/ZinxV0.4/conf/zinx.json")
 	if err != nil {
 		fmt.Println("read file error:", err)
 		panic(err)
