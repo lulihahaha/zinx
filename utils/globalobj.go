@@ -35,7 +35,7 @@ var GlobalObject *GlobalObj
 
 // 从zinx.json中去加载用于自定义的参数
 func (g *GlobalObj) Reload() {
-	data, err := os.Open("ZinxV0.4/zinx.json")
+	data, err := os.Open("zinx.json")
 	if err != nil {
 		fmt.Println("read file error:", err)
 		panic(err)
